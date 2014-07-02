@@ -23,7 +23,9 @@
 
 
 
-@property Person *model;
+@property Person *model; // no mvvm model
+@property Person *mvvmModel;    // mvvm model
+
 @property PersonViewModel *viewModel;
 
 
@@ -36,18 +38,17 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
     
-    self.model = [[Person alloc] initwithSalutation:@"Mr." firstName:@"first" lastName:@"last" birthdate:[NSDate date]];
+    self.model = [[Person alloc] initwithSalutation:@"Mr." firstName:@"No" lastName:@"MVVM" birthdate:[NSDate date]];
     
-    self.viewModel = [[PersonViewModel alloc] initWithPerson:self.model];
+    // no MVVM
+    [self withOutMVVM];
+    
+    // try MVVM
+    self.mvvmModel = [[Person alloc] initwithSalutation:@"Mr." firstName:@"Yes" lastName:@"MVVM" birthdate:[NSDate date]];
+    self.viewModel = [[PersonViewModel alloc] initWithPerson:self.mvvmModel];
     
     [self withMVVM];
-    [self withOutMVVM];
 
-}
-
-- (void)withMVVM {
-    self.mvvmName.stringValue = self.viewModel.nameText;
-    self.mvvmDate.stringValue = self.viewModel.birthdateText;
 }
 
 - (void)withOutMVVM {
@@ -61,6 +62,13 @@
     [dateFormatter setDateFormat:@"EEEE MMMM d, yyyy"];
     self.birthdateLabel.stringValue = [dateFormatter stringFromDate:self.model.birthdate];
 }
+
+- (void)withMVVM {
+    self.mvvmName.stringValue = self.viewModel.nameText;
+    self.mvvmDate.stringValue = self.viewModel.birthdateText;
+}
+
+
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
