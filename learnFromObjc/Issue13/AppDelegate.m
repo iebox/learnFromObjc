@@ -13,9 +13,15 @@
 @interface AppDelegate ()
 
 @property (weak) IBOutlet NSWindow *window;
-@property (weak) IBOutlet NSTextField *nameLabel;
 
+@property (weak) IBOutlet NSTextField *nameLabel;
 @property (weak) IBOutlet NSTextField *birthdateLabel;
+
+
+@property (weak) IBOutlet NSTextField *mvvmName;
+@property (weak) IBOutlet NSTextField *mvvmDate;
+
+
 
 @property Person *model;
 @property PersonViewModel *viewModel;
@@ -34,12 +40,17 @@
     
     self.viewModel = [[PersonViewModel alloc] initWithPerson:self.model];
     
-//        [self oldLoadData];
-    self.nameLabel.stringValue = self.viewModel.nameText;
-    self.birthdateLabel.stringValue = self.viewModel.birthdateText;
+    [self withMVVM];
+    [self withOutMVVM];
+
 }
 
-- (void)oldLoadData {
+- (void)withMVVM {
+    self.mvvmName.stringValue = self.viewModel.nameText;
+    self.mvvmDate.stringValue = self.viewModel.birthdateText;
+}
+
+- (void)withOutMVVM {
     if (self.model.salutation.length > 0) {
         self.nameLabel.stringValue = [NSString stringWithFormat:@"%@ %@ %@", self.model.salutation, self.model.firstName, self.model.lastName];
     } else {
